@@ -17,16 +17,21 @@ const App = () => {
 
 	// Create coins variable and set to empty array
 	const [coins, updateCoins] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	// Define function to all API
 	// async function fetchCoins() { // Reformated to what it's in line 15
 	const fetchCoins = async () => {
+		setLoading(true);
+
 		const { limit, start } = input;
 		const data = await API.get(
 			"cryptoapi",
 			`/coins?limit=${limit}&start=${start}`
 		);
 		updateCoins(data.coins);
+
+		setLoading(false);
 	};
 
 	// Call fetchCoins function when component loads
@@ -36,25 +41,35 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<input
-				onChange={(e) => updateInputValues("limit", e.target.value)}
-				placeholder="Enter a limit"
-			/>
-			<input
-				placeholder="Enter a starting value"
-				onChange={(e) => updateInputValues("start", e.target.value)}
-			/>
+			{loading && <h2>Loading...</h2>}
 
-			<button onClick={fetchCoins}>Fetch Coins</button>
+			{!loading && (
+				<div>
+					<input
+						onChange={(e) =>
+							updateInputValues("limit", e.target.value)
+						}
+						placeholder="Enter a limit"
+					/>
+					<input
+						placeholder="Enter a starting value"
+						onChange={(e) =>
+							updateInputValues("start", e.target.value)
+						}
+					/>
 
-			{coins.map((coin) => (
-				<div key={coin.name}>
-					<h2>
-						{coin.name} - {coin.symbol}
-					</h2>
-					<h5>${coin.price_usd}</h5>
+					<button onClick={fetchCoins}>Fetch Coins</button>
+
+					{coins.map((coin) => (
+						<div key={coin.name}>
+							<h2>
+								{coin.name} - {coin.symbol}
+							</h2>
+							<h5>${coin.price_usd}</h5>
+						</div>
+					))}
 				</div>
-			))}
+			)}
 		</div>
 	);
 };
