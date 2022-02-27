@@ -38,6 +38,7 @@ const App = () => {
 	// Call fetchCoins function when component loads
 	useEffect(() => {
 		fetchCoins();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

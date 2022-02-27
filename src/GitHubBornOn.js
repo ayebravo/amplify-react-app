@@ -26,7 +26,12 @@ const GitHubBornOn = () => {
 	return (
 		<>
 			{bornOnInfo && loginInfo && createdAtInfo && (
-				<h2>
+				<h2
+					style={{
+						border: "2px solid purple",
+						display: "inline-block",
+						padding: "0.2em",
+					}}>
 					{loginInfo} - {createdAtInfo}
 				</h2>
 			)}
