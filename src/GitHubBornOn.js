@@ -7,8 +7,12 @@ const GitHubBornOn = () => {
 	const [createdAtInfo, setCreatedAtInfo] = useState("");
 
 	const getBornOnInfo = async () => {
-		const data = await API.get("cryptoapi", "/born");
-		setBornOnInfo(data.bornOnInfo);
+		try {
+			const data = await API.get("cryptoapi", "/born");
+			setBornOnInfo(data.bornOnInfo);
+		} catch (error) {
+			console.error("Error", error);
+		}
 	};
 
 	useEffect(() => {
