@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 // Import the API category from AWS Amplify
 import { API } from "aws-amplify";
 
+import GitHubBornOn from "./GitHubBornOn.js";
 import "./App.css";
 
 const App = () => {
@@ -68,6 +69,7 @@ const App = () => {
 							<h5>${coin.price_usd}</h5>
 						</div>
 					))}
+					<GitHubBornOn />
 				</div>
 			)}
 		</div>
