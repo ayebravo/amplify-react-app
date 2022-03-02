@@ -2,16 +2,23 @@ import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 
 const GitHubBornOn = () => {
-	const [bornOnInfo, setBornOnInfo] = useState(null);
-	const [loginInfo, setLoginInfo] = useState("");
-	const [createdAtInfo, setCreatedAtInfo] = useState("");
+	const [bornOnInfo, setBornOnInfo] = useState({
+		loginData: "",
+		createdAtData: "",
+	});
+	const [isDataLoaded, setIsDataLoaded] = useState("false");
 
 	const getBornOnInfo = async () => {
 		try {
 			const data = await API.get("cryptoapi", "/born");
-			setBornOnInfo(data.bornOnInfo);
+
+			setIsDataLoaded(true);
+			setBornOnInfo({
+				loginData: data.bornOnInfo.login,
+				createdAtData: data.bornOnInfo.created_at,
+			});
 		} catch (error) {
-			console.error("Error", error);
+			console.error(`Error: ${error}`);
 		}
 	};
 
@@ -19,25 +26,19 @@ const GitHubBornOn = () => {
 		getBornOnInfo();
 	}, []);
 
-	if (bornOnInfo && loginInfo === "") {
-		setLoginInfo(bornOnInfo.login);
-	}
-
-	if (bornOnInfo && createdAtInfo === "") {
-		setCreatedAtInfo(bornOnInfo.created_at);
-	}
-
 	return (
 		<>
-			{bornOnInfo && loginInfo && createdAtInfo && (
+			{isDataLoaded === true ? (
 				<h2
 					style={{
-						border: "2px solid purple",
+						border: "2px solid green",
 						display: "inline-block",
 						padding: "0.2em",
 					}}>
-					{loginInfo} - {createdAtInfo}
+					{bornOnInfo.loginData} - {bornOnInfo.createdAtData}
 				</h2>
+			) : (
+				<h2>The GitHub Born On Information couldn't be loaded.</h2>
 			)}
 		</>
 	);
